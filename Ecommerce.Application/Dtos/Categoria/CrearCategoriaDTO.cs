@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Versioning;
 using System.Text;
 
-namespace Ecommerce.Application.Dtos
+namespace Ecommerce.Application.Dtos.Categoria
 {
     public class CrearCategoriaDTO
     {

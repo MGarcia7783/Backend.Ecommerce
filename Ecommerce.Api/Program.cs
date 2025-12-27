@@ -59,6 +59,7 @@ builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 
 // Registrar servicios con sus interfaces
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<IProductoService, ProductoService>();
 
 
 // Registrar AutoMapper
@@ -67,6 +68,12 @@ builder.Services.AddAutoMapper(typeof(MappingsProfile));
 
 // Agregar controladores
 builder.Services.AddControllers();
+
+
+// Agregar HttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
+
 builder.Services.AddOpenApi();
 
 

@@ -1,4 +1,4 @@
-﻿using Ecommerce.Application.Dtos;
+﻿using Ecommerce.Application.Dtos.Categoria;
 using Ecommerce.Application.Interfaces.Service;
 using Ecommerce.Application.Response;
 using Microsoft.AspNetCore.Http;

@@ -1,4 +1,4 @@
-﻿using Ecommerce.Application.Dtos;
+﻿using Ecommerce.Application.Dtos.Categoria;
 
 namespace Ecommerce.Application.Interfaces.Service
 {

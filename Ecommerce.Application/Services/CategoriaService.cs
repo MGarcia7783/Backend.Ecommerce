@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Ecommerce.Application.Dtos;
+using Ecommerce.Application.Dtos.Categoria;
 using Ecommerce.Application.Interfaces.Repository;
 using Ecommerce.Application.Interfaces.Service;
 using Ecommerce.Domain.Entities;
