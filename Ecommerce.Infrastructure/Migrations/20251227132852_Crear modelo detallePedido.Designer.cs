@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20251226162814_Crear modelo detallePedido")]
+    [Migration("20251227132852_Crear modelo detallePedido")]
     partial class CrearmodelodetallePedido
     {
         /// <inheritdoc />
@@ -76,7 +76,7 @@ namespace Ecommerce.Infrastructure.Migrations
                     b.Property<int>("idPedido")
                         .HasColumnType("int");
 
-                    b.Property<int>("idProduto")
+                    b.Property<int>("idProducto")
                         .HasColumnType("int");
 
                     b.Property<string>("nombreProducto")
@@ -96,9 +96,9 @@ namespace Ecommerce.Infrastructure.Migrations
 
                     b.HasIndex("idPedido");
 
-                    b.HasIndex("idProduto");
+                    b.HasIndex("idProducto");
 
-                    b.ToTable("DetallePedido");
+                    b.ToTable("DetallePedidos");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
@@ -432,7 +432,7 @@ namespace Ecommerce.Infrastructure.Migrations
 
                     b.HasOne("Ecommerce.Domain.Entities.Producto", "Producto")
                         .WithMany("Detalles")
-                        .HasForeignKey("idProduto")
+                        .HasForeignKey("idProducto")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

@@ -95,7 +95,7 @@ namespace Ecommerce.Infrastructure.Migrations
 
                     b.HasIndex("idProducto");
 
-                    b.ToTable("DetallesPedidos");
+                    b.ToTable("DetallePedidos");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Pago", b =>

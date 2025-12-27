@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20251226160900_Crear modelo usuarios")]
-    partial class Crearmodelousuarios
+    [Migration("20251227133121_Crear modelo pagos")]
+    partial class Crearmodelopagos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,130 @@ namespace Ecommerce.Infrastructure.Migrations
                     b.ToTable("Categorias", t =>
                         {
                             t.HasCheckConstraint("CK_Categoria_Estado", "\"estado\" IN ('Activo', 'Inactivo')");
+                        });
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.DetallePedido", b =>
+                {
+                    b.Property<int>("idDetallePedido")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idDetallePedido"));
+
+                    b.Property<int>("cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("idPedido")
+                        .HasColumnType("int");
+
+                    b.Property<int>("idProducto")
+                        .HasColumnType("int");
+
+                    b.Property<string>("nombreProducto")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<decimal>("precioUnitario")
+                        .HasColumnType("decimal(11,2)");
+
+                    b.Property<decimal>("subtotal")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(11,2)")
+                        .HasComputedColumnSql("\"cantidad\" * \"precioUnitario\"", true);
+
+                    b.HasKey("idDetallePedido");
+
+                    b.HasIndex("idPedido");
+
+                    b.HasIndex("idProducto");
+
+                    b.ToTable("DetallePedidos");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Pago", b =>
+                {
+                    b.Property<int>("idPago")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPago"));
+
+                    b.Property<string>("estado")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTimeOffset>("fechaPago")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("idPedido")
+                        .HasColumnType("int");
+
+                    b.Property<string>("moneda")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<decimal>("monto")
+                        .HasColumnType("decimal(11,2)");
+
+                    b.HasKey("idPago");
+
+                    b.HasIndex("idPedido");
+
+                    b.ToTable("Pagos", t =>
+                        {
+                            t.HasCheckConstraint("CK_Pago_Estado", "\"estado\" IN ('Aprobado', 'Rechazado', 'Cancelado', 'Pendiente')");
+                        });
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
+                {
+                    b.Property<int>("idPedido")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPedido"));
+
+                    b.Property<string>("direccionEnvio")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("estado")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
+                    b.Property<DateTimeOffset>("fechaRegistro")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("idUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("nombreCliente")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<string>("telefono")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<decimal>("total")
+                        .HasColumnType("decimal(11,2)");
+
+                    b.HasKey("idPedido");
+
+                    b.HasIndex("idUsuario");
+
+                    b.ToTable("Pedidos", t =>
+                        {
+                            t.HasCheckConstraint("CK_Pedido_Estado", "\"estado\" IN ('Pendiente', 'Entregado', 'Cancelado')");
                         });
                 });
 
@@ -335,6 +459,46 @@ namespace Ecommerce.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Ecommerce.Domain.Entities.DetallePedido", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.Pedido", "Pedido")
+                        .WithMany("Detalles")
+                        .HasForeignKey("idPedido")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ecommerce.Domain.Entities.Producto", "Producto")
+                        .WithMany("Detalles")
+                        .HasForeignKey("idProducto")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Pedido");
+
+                    b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Pago", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.Pedido", "Pedido")
+                        .WithMany("Pagos")
+                        .HasForeignKey("idPedido")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Pedido");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
+                {
+                    b.HasOne("Ecommerce.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("idUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("Ecommerce.Domain.Entities.Producto", b =>
                 {
                     b.HasOne("Ecommerce.Domain.Entities.Categoria", "Categoria")
@@ -400,6 +564,18 @@ namespace Ecommerce.Infrastructure.Migrations
             modelBuilder.Entity("Ecommerce.Domain.Entities.Categoria", b =>
                 {
                     b.Navigation("Productos");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
+                {
+                    b.Navigation("Detalles");
+
+                    b.Navigation("Pagos");
+                });
+
+            modelBuilder.Entity("Ecommerce.Domain.Entities.Producto", b =>
+                {
+                    b.Navigation("Detalles");
                 });
 #pragma warning restore 612, 618
         }

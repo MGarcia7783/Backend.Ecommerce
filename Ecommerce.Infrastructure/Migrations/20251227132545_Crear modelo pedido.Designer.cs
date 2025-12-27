@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20251226163019_Corregir nombre idProducto en detallePedido")]
-    partial class CorregirnombreidProductoendetallePedido
+    [Migration("20251227132545_Crear modelo pedido")]
+    partial class Crearmodelopedido
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,45 +60,6 @@ namespace Ecommerce.Infrastructure.Migrations
                         {
                             t.HasCheckConstraint("CK_Categoria_Estado", "\"estado\" IN ('Activo', 'Inactivo')");
                         });
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.DetallePedido", b =>
-                {
-                    b.Property<int>("idDetallePedido")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idDetallePedido"));
-
-                    b.Property<int>("cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idPedido")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idProducto")
-                        .HasColumnType("int");
-
-                    b.Property<string>("nombreProducto")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<decimal>("precioUnitario")
-                        .HasColumnType("decimal(11,2)");
-
-                    b.Property<decimal>("subtotal")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("decimal(11,2)")
-                        .HasComputedColumnSql("\"cantidad\" * \"precioUnitario\"", true);
-
-                    b.HasKey("idDetallePedido");
-
-                    b.HasIndex("idPedido");
-
-                    b.HasIndex("idProducto");
-
-                    b.ToTable("DetallePedido");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
@@ -422,25 +383,6 @@ namespace Ecommerce.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce.Domain.Entities.DetallePedido", b =>
-                {
-                    b.HasOne("Ecommerce.Domain.Entities.Pedido", "Pedido")
-                        .WithMany("Detalles")
-                        .HasForeignKey("idPedido")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce.Domain.Entities.Producto", "Producto")
-                        .WithMany("Detalles")
-                        .HasForeignKey("idProducto")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Pedido");
-
-                    b.Navigation("Producto");
-                });
-
             modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
                 {
                     b.HasOne("Ecommerce.Domain.Entities.Usuario", "Usuario")
@@ -517,16 +459,6 @@ namespace Ecommerce.Infrastructure.Migrations
             modelBuilder.Entity("Ecommerce.Domain.Entities.Categoria", b =>
                 {
                     b.Navigation("Productos");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
-                {
-                    b.Navigation("Detalles");
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Producto", b =>
-                {
-                    b.Navigation("Detalles");
                 });
 #pragma warning restore 612, 618
         }

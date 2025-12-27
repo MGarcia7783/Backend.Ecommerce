@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20251226161757_Crear modelo pedido")]
-    partial class Crearmodelopedido
+    [Migration("20251227132229_Crear modelo usuarios")]
+    partial class Crearmodelousuarios
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,54 +59,6 @@ namespace Ecommerce.Infrastructure.Migrations
                     b.ToTable("Categorias", t =>
                         {
                             t.HasCheckConstraint("CK_Categoria_Estado", "\"estado\" IN ('Activo', 'Inactivo')");
-                        });
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
-                {
-                    b.Property<int>("idPedido")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPedido"));
-
-                    b.Property<string>("direccionEnvio")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("estado")
-                        .IsRequired()
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)");
-
-                    b.Property<DateTimeOffset>("fechaRegistro")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("idUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("nombreCliente")
-                        .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
-
-                    b.Property<string>("telefono")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<decimal>("total")
-                        .HasColumnType("decimal(11,2)");
-
-                    b.HasKey("idPedido");
-
-                    b.HasIndex("idUsuario");
-
-                    b.ToTable("Pedidos", t =>
-                        {
-                            t.HasCheckConstraint("CK_Pedido_Estado", "\"estado\" IN ('Pendiente', 'Entregado', 'Cancelado')");
                         });
                 });
 
@@ -381,17 +333,6 @@ namespace Ecommerce.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Ecommerce.Domain.Entities.Pedido", b =>
-                {
-                    b.HasOne("Ecommerce.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("idUsuario")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Ecommerce.Domain.Entities.Producto", b =>
