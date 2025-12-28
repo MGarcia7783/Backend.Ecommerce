@@ -53,7 +53,7 @@ namespace Ecommerce.Api.Controllers
         }
 
         [HttpPost("login")]
-        [Authorize(Roles ="Administrador, Cliente")]
+        [AllowAnonymous]
         public async Task<ActionResult<LoginRespuestaUsuarioDTO>> Login([FromBody] LoginUsuarioDTO loginDTO)
         {
             return await _service.LogingAsync(loginDTO);
