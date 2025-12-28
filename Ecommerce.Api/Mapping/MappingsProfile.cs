@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Ecommerce.Application.Dtos.Categoria;
+using Ecommerce.Application.Dtos.Pedido;
 using Ecommerce.Application.Dtos.Producto;
 using Ecommerce.Application.Dtos.Usuario;
 using Ecommerce.Application.Response;
@@ -46,6 +47,16 @@ namespace Ecommerce.Api.Mapping
 
             CreateMap<Usuario, LoginRespuestaUsuarioDTO>()
                 .ForMember(dest => dest.Usuario, opt => opt.MapFrom(src => src));
+
+            #endregion
+
+            #region Mapeo del modelo pedidos
+
+            CreateMap<Pedido, PedidoDTO>();
+            CreateMap<DetallePedido, DetallePedidoDTO>();
+
+            CreateMap<CrearPedidoDTO, Pedido>();
+            CreateMap<CrearDetallePedidoDTO, DetallePedido>();
 
             #endregion
         }

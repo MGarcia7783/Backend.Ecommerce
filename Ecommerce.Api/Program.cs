@@ -79,6 +79,7 @@ builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 
 // Registrar servicios con sus interfaces
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
