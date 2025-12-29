@@ -89,6 +89,7 @@ builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 builder.Services.AddScoped<IPagoService, PagoService>();
+builder.Services.AddScoped<IChatBotService, ChatBotService>();
 
 
 // Validar la clave secreta
