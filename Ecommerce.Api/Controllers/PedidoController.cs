@@ -31,6 +31,7 @@ namespace Ecommerce.Api.Controllers
             return Ok(new RespuestaPaginada<PedidoDTO>(pedidos, totalPedidos, numeroPagina, pageSize));
         }
 
+
         [HttpGet("{id:int}", Name = "GetPedido")]
         public async Task<IActionResult> GetPedido(int id)
         {
@@ -38,28 +39,31 @@ namespace Ecommerce.Api.Controllers
             return Ok(registro);
         }
 
+
         [HttpGet("buscar-por-usuario")]
         [Authorize(Roles = "Administrador, Cliente")]
         public async Task<IActionResult> GetPedidoPorUsuario([FromQuery] string idUsuario, [FromQuery] int numeroPagina = 1, [FromQuery] int pageSize = 10)
         {
             var pedidos = await _service.ObtenerPorUsuarioPaginadosAsync(idUsuario, numeroPagina, pageSize);
             if (pedidos == null || !pedidos.Any())
-                return NotFound();
+                return NotFound($"No se encontró ningún registro para el usuario con ID: '{idUsuario}'");
 
             var totalPedidos = await _service.ContarPorUsuarioAsync(idUsuario);
             return Ok(new RespuestaPaginada<PedidoDTO>(pedidos, totalPedidos, numeroPagina, pageSize));
         }
+
 
         [HttpGet("buscar-por-fecha")]
         public async Task<IActionResult> GetPedidoPorFecha([FromQuery] DateTime fechaInicio, [FromQuery] DateTime fechaFin, [FromQuery] int numeroPagina = 1, [FromQuery] int pageSize = 10)
         {
             var pedidos = await _service.ObtenerPorFechaPaginadosAsync(fechaInicio, fechaFin, numeroPagina, pageSize);
             if (pedidos == null || !pedidos.Any())
-                return NotFound();
+                return NotFound("No se encontró ningún registro para el rango de fecha solicitado.");
 
             var totalPedidos = await _service.ContarPorFechaAsync(fechaInicio, fechaFin);
             return Ok(new RespuestaPaginada<PedidoDTO>(pedidos, totalPedidos, numeroPagina, pageSize));
         }
+
 
         [HttpPatch("actualizar-estado/{idPedido}")]
         public async Task<IActionResult> ActualizarEstadoPedido(int idPedido, [FromQuery] string nuevoEstado)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Ecommerce.Application.Dtos.Categoria;
+using Ecommerce.Application.Dtos.Pago;
 using Ecommerce.Application.Dtos.Pedido;
 using Ecommerce.Application.Dtos.Producto;
 using Ecommerce.Application.Dtos.Usuario;
@@ -57,6 +58,20 @@ namespace Ecommerce.Api.Mapping
 
             CreateMap<CrearPedidoDTO, Pedido>();
             CreateMap<CrearDetallePedidoDTO, DetallePedido>();
+
+            #endregion
+
+            #region Mapeo del modelo pagos
+
+            CreateMap<Pago, PagoDTO>()
+                .ForMember(dest => dest.totalPedido,
+                            opt => opt.MapFrom(src => src.Pedido != null ? src.Pedido.total : (decimal?)null))
+                .ForMember(dest => dest.idUsuario,
+                            opt => opt.MapFrom(src => src.Pedido != null ? src.Pedido.idUsuario : null))
+                .ForMember(dest => dest.nombreCompleto,
+                            opt => opt.MapFrom(src => src.Pedido != null ? src.Pedido.Usuario!.nombreCompeto : null));
+
+            CreateMap<CrearPagoDTO, Pago>();
 
             #endregion
         }

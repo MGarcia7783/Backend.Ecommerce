@@ -86,7 +86,10 @@ namespace Ecommerce.Application.Services
         public async Task<PedidoDTO> CrearPedidoAsync(CrearPedidoDTO dto)
         {
             if(dto == null)
-                throw new ArgumentNullException("el pedido no puede ser nulo.");
+                throw new ArgumentNullException("El pedido no puede ser nulo.");
+
+            if (dto.total <= 0)
+                throw new InvalidOperationException("El total del pedido debe ser mayor a cero.");
 
             if (dto.Detalles == null || !dto.Detalles.Any())
                 throw new ArgumentException("El pedido debe contener al menos un detalle.");
