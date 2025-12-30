@@ -73,10 +73,16 @@ git clone https://github.com/MGarcia7783/Backend.Ecommerce.git
 ⚙ Configura las variables de entorno en el archivo .env
 
 ```env
+# --- DATABASE CONFIGURATION ---
 DB_SERVER=localhost
 DB_DATABASE=EcommerceDb
 DB_USER=TuUsuario
 DB_PASSWORD=TuPassword
+
+# --- JWT AUTHENTICATION ---
+JWT_KEY=TuClaveSecreta
+JWT_ISSUER=EcommerceApi
+JWT_AUDIENCE=EcommerceApiUser
 ```
 
 🗄️ Crear la base de datos y aplicar migraciones
